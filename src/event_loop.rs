@@ -264,7 +264,7 @@ impl BracioEventLoop {
             return Err(PyRuntimeError::new_err("loop closed"));
         }
 
-        let handle_ref = handle.clone().unbind(); // Keep reference to pass to worker
+        let handle_ref = handle.clone().unbind();
 
         rust_self.runtime.handle().spawn(async move {
             if delay > 0.0 {

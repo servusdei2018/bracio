@@ -5,6 +5,7 @@ build-backend = "maturin"
 [project]
 name = "bracio"
 description = "High-performance Rust-backed asyncio event loop powered by Tokio"
+long-description = "Bracio is an asyncio event loop implementation for Python, built on top of the Tokio runtime in Rust. It aims to provide high performance and low latency for asynchronous applications by leveraging Rust's safety and concurrency features."
 requires-python = ">=3.11"
 version = "0.0.1"
 license = { file = "LICENSE" }
