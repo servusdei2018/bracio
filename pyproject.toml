@@ -1,0 +1,32 @@
+[build-system]
+requires = ["maturin>=1.10,<2.0"]
+build-backend = "maturin"
+
+[project]
+name = "bracio"
+description = "High-performance Rust-backed asyncio event loop powered by Tokio"
+requires-python = ">=3.11"
+keywords = ["asyncio", "event-loop", "tokio", "rust"]
+classifiers = [
+    "Programming Language :: Rust",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dynamic = ["version"]
+
+[project.optional-dependencies]
+tests = [
+    "pytest",
+]
+
+[project.urls]
+Repository = "https://github.com/servusdei2018/bracio"
+
+[tool.maturin]
+python-source = "python"
+
+[dependency-groups]
+optional = [
+    "ruff>=0.14.10",
+]
