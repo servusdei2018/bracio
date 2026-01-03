@@ -174,18 +174,23 @@ impl BracioEventLoop {
         Ok(())
     }
 
-    // TODO: Stub
     fn is_running(&self) -> PyResult<bool> {
-        Ok(true)
+        let guard = self.receiver.lock();
+        Ok(guard.is_none())
     }
 
-    // TODO: Stub
     fn is_closed(&self) -> PyResult<bool> {
-        Ok(false)
+        Ok(self.sender.is_closed())
     }
 
-    // TODO: Stub
     fn close(&self) -> PyResult<()> {
+        let _ = self.sender.send(LoopMessage::Stop);
+
+        // Drop any receiver we still hold locally; if the loop is running it will
+        // replace the receiver when it finishes.
+        let mut guard = self.receiver.lock();
+        *guard = None;
+
         Ok(())
     }
 
