@@ -6,6 +6,12 @@ build-backend = "maturin"
 name = "bracio"
 description = "High-performance Rust-backed asyncio event loop powered by Tokio"
 requires-python = ">=3.11"
+version = "0.0.1"
+license = { file = "LICENSE" }
+
+authors = [
+    { name = "Nate Bracy", email = "nate@bracy.dev" }
+]
 keywords = ["asyncio", "event-loop", "tokio", "rust"]
 classifiers = [
     "Programming Language :: Rust",
@@ -21,7 +27,7 @@ tests = [
 ]
 
 [project.urls]
-Repository = "https://github.com/servusdei2018/bracio"
+repository = "https://github.com/servusdei2018/bracio"
 
 [tool.maturin]
 python-source = "python"
