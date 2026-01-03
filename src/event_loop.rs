@@ -5,7 +5,8 @@ use pyo3::exceptions::PyRuntimeError;
 use pyo3::prelude::*;
 use pyo3::types::{PyAny, PyDict, PyTuple};
 use std::sync::atomic::{AtomicBool, Ordering};
-use std::sync::{Arc, Mutex};
+use std::sync::Arc;
+use parking_lot::Mutex;
 use tokio::runtime::{Builder, Runtime};
 use tokio::sync::mpsc::{UnboundedReceiver, UnboundedSender, unbounded_channel};
 
@@ -59,7 +60,7 @@ impl BracioEventLoop {
 
         let (mut receiver, rt_handle) = {
             let rust_self = slf.borrow();
-            let mut guard = rust_self.receiver.lock().unwrap();
+            let mut guard = rust_self.receiver.lock();
             let rx = guard
                 .take()
                 .expect("run_forever called more than once or concurrently");
@@ -96,7 +97,7 @@ impl BracioEventLoop {
         });
 
         let rust_self = slf.borrow();
-        let mut guard = rust_self.receiver.lock().unwrap();
+        let mut guard = rust_self.receiver.lock();
         *guard = Some(receiver);
 
         if asyncio_events.hasattr("_set_running_loop")? {
@@ -299,16 +300,24 @@ impl BracioEventLoop {
 
     // === I/O ===
 
-    fn add_reader(&self, fd: i32, cb: Py<PyAny>, args: Py<PyTuple>) {
-        self.io_registry.lock().unwrap().add_reader(fd, cb, args);
+    fn add_reader(&self, fd: i32, cb: Py<PyAny>, args: Py<PyTuple>) -> PyResult<()> {
+        let mut reg = self.io_registry.lock();
+        reg.add_reader(fd, cb, args);
+        Ok(())
     }
-    fn remove_reader(&self, fd: i32) {
-        self.io_registry.lock().unwrap().remove_reader(fd);
+    fn remove_reader(&self, fd: i32) -> PyResult<()> {
+        let mut reg = self.io_registry.lock();
+        reg.remove_reader(fd);
+        Ok(())
     }
-    fn add_writer(&self, fd: i32, cb: Py<PyAny>, args: Py<PyTuple>) {
-        self.io_registry.lock().unwrap().add_writer(fd, cb, args);
+    fn add_writer(&self, fd: i32, cb: Py<PyAny>, args: Py<PyTuple>) -> PyResult<()> {
+        let mut reg = self.io_registry.lock();
+        reg.add_writer(fd, cb, args);
+        Ok(())
     }
-    fn remove_writer(&self, fd: i32) {
-        self.io_registry.lock().unwrap().remove_writer(fd);
+    fn remove_writer(&self, fd: i32) -> PyResult<()> {
+        let mut reg = self.io_registry.lock();
+        reg.remove_writer(fd);
+        Ok(())
     }
 }

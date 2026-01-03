@@ -4,6 +4,7 @@ requires-python = ">=3.11"
 
 [[package]]
 name = "bracio"
+version = "0.0.1"
 source = { editable = "." }
 
 [package.optional-dependencies]

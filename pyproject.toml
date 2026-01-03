@@ -20,7 +20,6 @@ classifiers = [
     "Programming Language :: Python :: Implementation :: PyPy",
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
-dynamic = ["version"]
 
 [project.optional-dependencies]
 tests = [
